@@ -42,8 +42,7 @@ class NetworkThread implements Runnable{
 
     public void addToQueue(String color){
         for(int i=0;i<15;i++){
-            LedOperation newOperation = new LedOperation(i, 1, color);
-            ledInstruction.add(newOperation);
+            //ledInstruction.add(newOperation);
         }
     }
 
@@ -55,7 +54,6 @@ class NetworkThread implements Runnable{
                 Operation o = ledInstruction.take();
                 URL url;
 
-                url = new URL(String.format("http://192.168.1.108/?led=%d&color=%s&turnOn=%d", 0, (LedOperation) o. ));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -94,7 +92,7 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String color = "00FFFFFF";
-                LedOperation activateLED = new LedOperation(1, color);
+                LedOperation activateLED = new LedOperation(1, 1, color);
             }
         });
 
@@ -103,7 +101,7 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String newRandomColor = generateRandomColor();
-                LedOperation activateLED = new LedOperation(1, newRandomColor);
+                LedOperation activateLED = new LedOperation(1, 1, newRandomColor);
             }
         });
 
