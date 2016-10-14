@@ -1,7 +1,0 @@
-#Thu Oct 06 21:05:54 CEST 2016
-base.0=/Users/tadej.bukovec/Desktop/gitLab/LedController/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_51ac1ef2c1b49e910867d86652383d2fdc05d223
-renamed.1=classes2.dex
-renamed.0=classes.dex
-file.1=/Users/tadej.bukovec/Desktop/gitLab/LedController/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_06fefd08be431a2a57ed61102a6e8a23f8ba3900/classes.dex
-base.1=/Users/tadej.bukovec/Desktop/gitLab/LedController/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_06fefd08be431a2a57ed61102a6e8a23f8ba3900
-file.0=/Users/tadej.bukovec/Desktop/gitLab/LedController/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_51ac1ef2c1b49e910867d86652383d2fdc05d223/classes.dex
