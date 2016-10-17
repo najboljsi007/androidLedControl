@@ -11,6 +11,11 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -18,10 +23,17 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.net.URL;
 
 //wrapper class foe operations
-class Operation{
+interface Operation{
+    String makeQuery();
 }
 
-class LedOperation extends Operation{
+class Constants{
+
+    static final String url = "http://192.168.1.101:5000/";
+
+}
+
+class LedOperation implements Operation{
 
     int ledIndex;
     String ledColor;
@@ -33,17 +45,41 @@ class LedOperation extends Operation{
         ledColor = color;
     }
 
+    @Override
+    public String makeQuery() {
+        return String.format(Constants.url + "led?led=%d&color=%s&turnOn=1", ledIndex, ledColor);
+    }
 }
-class ServoOperation extends Operation{}
+
+class ContiniousServoOperation implements Operation{
+
+    boolean enable;
+    //1 for clockwise, 0 for counter-clockwise
+    int rotation;
+
+    @Override
+    public String makeQuery() {
+        return String.format(Constants.url + "servo_continious?enable=%d&stepDir=%d",enable, rotation);
+    }
+}
+
+class RandomServoOperation implements Operation{
+
+    boolean enable;
+    @Override
+    public String makeQuery() {
+        return String.format(Constants.url + "servo_random?enable=%d",enable);
+    }
+}
 
 class NetworkThread implements Runnable{
 
     BlockingQueue<Operation> ledInstruction = new LinkedBlockingQueue();
 
-    public void addToQueue(String color){
-        for(int i=0;i<15;i++){
-            //ledInstruction.add(newOperation);
-        }
+    public void addToQueue(Operation operation){
+
+                ledInstruction.add(operation);
+
     }
 
     @Override
@@ -52,7 +88,17 @@ class NetworkThread implements Runnable{
 
             try {
                 Operation o = ledInstruction.take();
-                URL url;
+                try {
+                    URL url = new URL(o.makeQuery());
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    InputStream ss = connection.getInputStream();
+                    OutputStream cc = connection.getOutputStream();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                    continue;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -64,14 +110,17 @@ class NetworkThread implements Runnable{
 
 public class MenuActivity extends AppCompatActivity {
 
+    private NetworkThread runnable;
+    private Thread networkThread;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
+        runnable = new NetworkThread();
+        networkThread = new Thread(runnable);
+        networkThread.start();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.authors);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +142,7 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String color = "00FFFFFF";
                 LedOperation activateLED = new LedOperation(1, 1, color);
+                runnable.addToQueue(activateLED);
             }
         });
 
@@ -102,6 +152,7 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String newRandomColor = generateRandomColor();
                 LedOperation activateLED = new LedOperation(1, 1, newRandomColor);
+                runnable.addToQueue(activateLED);
             }
         });
 
