@@ -22,14 +22,34 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:paddingTop="200dp"
+        android:layout_marginTop="14dp">
+
     <Button
         android:text="Spin To Win"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/servoBtn"
         android:layout_marginBottom="64dp"
-        android:layout_above="@+id/killBtn"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_weight="0.5"/>
+
+    <Button
+        android:text="Dizzle da shizzle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/servoRandBtn"
+        android:layout_marginBottom="64dp"
+        android:layout_alignParentStart="true"
+        android:layout_weight="0.5"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"

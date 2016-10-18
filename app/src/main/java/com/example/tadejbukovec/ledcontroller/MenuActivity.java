@@ -57,18 +57,29 @@ class ContiniousServoOperation implements Operation{
     //1 for clockwise, 0 for counter-clockwise
     int rotation;
 
+    public ContiniousServoOperation(boolean enable, int rotation) {
+        this.enable = enable;
+        this.rotation = rotation;
+    }
+
     @Override
     public String makeQuery() {
-        return String.format(Constants.url + "servo_continious?enable=%d&stepDir=%d",enable, rotation);
+        return String.format(Constants.url + "servo_continious?enable=%b&stepDir=%d",enable, rotation);
     }
 }
 
 class RandomServoOperation implements Operation{
 
     boolean enable;
+
+
+    public RandomServoOperation(boolean enable) {
+        this.enable = enable;
+    }
+
     @Override
     public String makeQuery() {
-        return String.format(Constants.url + "servo_random?enable=%d",enable);
+        return String.format(Constants.url + "servo_random?enable=%b",enable);
     }
 }
 
@@ -131,18 +142,28 @@ public class MenuActivity extends AppCompatActivity {
         });
 
 
-        Button whiteLight = (Button) findViewById(R.id.ledWhiteBtn);
-        Button colorLight = (Button) findViewById(R.id.ledColorBtn);
-        Button servo = (Button) findViewById(R.id.servoBtn);
-        Button kill = (Button) findViewById(R.id.killBtn);
+        final Button whiteLight = (Button) findViewById(R.id.ledWhiteBtn);
+        final Button colorLight = (Button) findViewById(R.id.ledColorBtn);
+        final Button servo = (Button) findViewById(R.id.servoBtn);
+        final Button servoRandom = (Button) findViewById(R.id.servoRandBtn);
+        final Button kill = (Button) findViewById(R.id.killBtn);
 
         //white light button logic
         whiteLight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String color = "00FFFFFF";
-                LedOperation activateLED = new LedOperation(1, 1, color);
-                runnable.addToQueue(activateLED);
+                if (!whiteLight.getText().equals("Turn off da lite")){
+                    String color = "00FFFFFF";
+                    LedOperation activateLED = new LedOperation(1, 1, color);
+                    runnable.addToQueue(activateLED);
+                    whiteLight.setText("Turn off da lite");
+                }
+                else{
+                    String color = "00000000";
+                    LedOperation activateLED = new LedOperation(1, 1, color);
+                    runnable.addToQueue(activateLED);
+                    whiteLight.setText("White lite");
+                }
             }
         });
 
@@ -150,9 +171,19 @@ public class MenuActivity extends AppCompatActivity {
         colorLight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newRandomColor = generateRandomColor();
-                LedOperation activateLED = new LedOperation(1, 1, newRandomColor);
-                runnable.addToQueue(activateLED);
+
+                if (!colorLight.getText().equals("Turn off da lite")){
+                    String newRandomColor = generateRandomColor();
+                    LedOperation activateLED = new LedOperation(1, 1, newRandomColor);
+                    runnable.addToQueue(activateLED);
+                    colorLight.setText("Turn off da lite");
+                }
+                else{
+                    String color = "00000000";
+                    LedOperation activateLED = new LedOperation(1, 1, color);
+                    runnable.addToQueue(activateLED);
+                    colorLight.setText("Kolor lite");
+                }
             }
         });
 
@@ -161,6 +192,33 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                if (!servo.getText().equals("Stop da speen")){
+                    ContiniousServoOperation spinDaLight = new ContiniousServoOperation(true, 1);
+                    runnable.addToQueue(spinDaLight);
+                    servo.setText("Stop da speen");
+                }
+                else{
+                    ContiniousServoOperation spinDaLight = new ContiniousServoOperation(false, 0);
+                    runnable.addToQueue(spinDaLight);
+                    servo.setText("Spin to win");
+                }
+            }
+        });
+
+        //random servo logic
+        servoRandom.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(!servoRandom.getText().equals("Stop da speen")){
+                    RandomServoOperation dizzleDaBitches = new RandomServoOperation(true);
+                    runnable.addToQueue(dizzleDaBitches);
+                    servoRandom.setText("Stop da speen");
+                }
+                else{
+                    RandomServoOperation dizzleNoBitches = new RandomServoOperation(false);
+                    runnable.addToQueue(dizzleNoBitches);
+                    servoRandom.setText("Dizzle da shizzle");
+                }
             }
         });
 
