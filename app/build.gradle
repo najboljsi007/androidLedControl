@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
-ext.systemProperties= System.properties
 
 android {
+    buildNumber = System.getenv('BUILD_NUMBER')
     compileSdkVersion 24
     buildToolsVersion "24.0.3"
     defaultConfig {
@@ -11,7 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        setProperty("archivesBaseName", "androidLedControl-" + ${systemProperties.BUILD_NUMBER})
+        setProperty("archivesBaseName", "androidLedControl-" + buildNumber)
     }
     buildTypes {
         release {
