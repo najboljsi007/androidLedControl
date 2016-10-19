@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+ext.systemProperties= System.properties
 
 android {
     compileSdkVersion 24
@@ -10,7 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        setProperty("archivesBaseName", "MyNewAppNameGoesHere")
+        setProperty("archivesBaseName", "androidLedControl-" + ${systemProperties.BUILD_NUMBER})
     }
     buildTypes {
         release {
