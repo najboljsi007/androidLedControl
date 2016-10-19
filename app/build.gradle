@@ -13,10 +13,9 @@ android {
     }
     buildTypes {
         release {
-	    versionName "1.0"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-	    setProperty("archivesBaseName", "AndroidLedController-" + versionName + "-" + System.getenv("BUILD_NUMBER"))
+	    setProperty("archivesBaseName", "AndroidLedController-" + System.getenv("BUILD_NUMBER"))
         }
     }
 }
