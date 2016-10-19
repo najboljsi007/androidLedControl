@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    buildNumber = System.getenv('BUILD_NUMBER')
     compileSdkVersion 24
     buildToolsVersion "24.0.3"
     defaultConfig {
@@ -11,12 +10,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        setProperty("archivesBaseName", "androidLedControl-" + buildNumber)
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+	    setProperty("archivesBaseName", "MyNewAppNameGoesHere" + System.getenv("BUILD_NUMBER"))
         }
     }
 }
