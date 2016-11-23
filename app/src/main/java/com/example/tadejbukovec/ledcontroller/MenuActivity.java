@@ -1,5 +1,6 @@
 package com.example.tadejbukovec.ledcontroller;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +10,10 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.SeekBar;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -29,9 +34,10 @@ interface Operation{
 
 class Constants{
 
-    static final String url = "http://192.168.1.101:5000/";
+    static final String url = "http://192.168.1.102/";
 
 }
+
 
 class LedOperation implements Operation{
 
@@ -53,18 +59,18 @@ class LedOperation implements Operation{
 
 class ContiniousServoOperation implements Operation{
 
-    boolean enable;
+    int enable;
     //1 for clockwise, 0 for counter-clockwise
     int rotation;
 
-    public ContiniousServoOperation(boolean enable, int rotation) {
+    public ContiniousServoOperation(int enable, int rotation) {
         this.enable = enable;
         this.rotation = rotation;
     }
 
     @Override
     public String makeQuery() {
-        return String.format(Constants.url + "servo_continious?enable=%b&stepDir=%d",enable, rotation);
+        return String.format(Constants.url + "motor_continious?enable=%d&dir=%d",enable, rotation);
     }
 }
 
@@ -79,7 +85,7 @@ class RandomServoOperation implements Operation{
 
     @Override
     public String makeQuery() {
-        return String.format(Constants.url + "servo_random?enable=%b",enable);
+        return String.format(Constants.url + "motor_random?enable=%b",enable);
     }
 }
 
@@ -144,9 +150,10 @@ public class MenuActivity extends AppCompatActivity {
 
         final Button whiteLight = (Button) findViewById(R.id.ledWhiteBtn);
         final Button colorLight = (Button) findViewById(R.id.ledColorBtn);
-        final Button servo = (Button) findViewById(R.id.servoBtn);
-        final Button servoRandom = (Button) findViewById(R.id.servoRandBtn);
-        final Button kill = (Button) findViewById(R.id.killBtn);
+        final Switch spin = (Switch) findViewById(R.id.rotation);
+        final Switch spinModify = (Switch) findViewById(R.id.rotationmode);
+        final SeekBar speed = (SeekBar) findViewById(R.id.speed);
+        final TextView textis = (TextView) findViewById(R.id.textView);
 
         //white light button logic
         whiteLight.setOnClickListener(new View.OnClickListener() {
@@ -187,47 +194,61 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
-        //servo button logic
-        servo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                if (!servo.getText().equals("Stop da speen")){
-                    ContiniousServoOperation spinDaLight = new ContiniousServoOperation(true, 1);
+        //spin switch logic
+        spin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked==true){
+                    ContiniousServoOperation spinDaLight = new ContiniousServoOperation(1, 1);
                     runnable.addToQueue(spinDaLight);
-                    servo.setText("Stop da speen");
                 }
                 else{
-                    ContiniousServoOperation spinDaLight = new ContiniousServoOperation(false, 0);
+                    ContiniousServoOperation spinDaLight = new ContiniousServoOperation(0, 0);
                     runnable.addToQueue(spinDaLight);
-                    servo.setText("Spin to win");
                 }
             }
         });
 
-        //random servo logic
-        servoRandom.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if(!servoRandom.getText().equals("Stop da speen")){
+        //spin switch logic
+        spinModify.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked==true){
                     RandomServoOperation dizzleDaBitches = new RandomServoOperation(true);
                     runnable.addToQueue(dizzleDaBitches);
-                    servoRandom.setText("Stop da speen");
                 }
                 else{
-                    RandomServoOperation dizzleNoBitches = new RandomServoOperation(false);
-                    runnable.addToQueue(dizzleNoBitches);
-                    servoRandom.setText("Dizzle da shizzle");
+                    ContiniousServoOperation spinDaLight = new ContiniousServoOperation(0, 0);
+                    runnable.addToQueue(spinDaLight);
                 }
             }
         });
 
-        //exit the app button logic
-        kill.setOnClickListener(new View.OnClickListener() {
+        //speed switch logic
+        speed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onClick(View v) {
-                finish();
-                System.exit(0);
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+
+                if (progress<30){
+                    textis.setText("SLOW");
+                }
+                if (progress>30 || progress<70 && progress>30){
+                    textis.setText("MEDIUM");
+                }
+                if (progress> 70){
+                    textis.setText("\"LIGHT\" SPEED");
+                }
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
 

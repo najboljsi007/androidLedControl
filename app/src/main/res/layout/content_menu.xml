@@ -13,71 +13,81 @@
     tools:context="com.example.tadejbukovec.ledcontroller.MenuActivity"
     tools:showIn="@layout/activity_menu">
 
-    <Button
-        android:text="Kill Masheen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/killBtn"
-        android:layout_marginBottom="71dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
-
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:paddingTop="200dp"
-        android:layout_marginTop="14dp">
+        android:layout_alignParentStart="true">
 
-    <Button
-        android:text="Spin To Win"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/servoBtn"
-        android:layout_marginBottom="64dp"
-        android:layout_alignParentStart="true"
-        android:layout_weight="0.5"/>
-
-    <Button
-        android:text="Dizzle da shizzle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/servoRandBtn"
-        android:layout_marginBottom="64dp"
-        android:layout_alignParentStart="true"
-        android:layout_weight="0.5"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:paddingTop="90dp"
-        android:layout_marginTop="14dp">
-
-        <Button
-            android:text="WHITE LITE"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/ledWhiteBtn"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
+            android:paddingTop="20dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="90dp"
+            android:layout_weight="0.5">
 
+            <Button
+                android:text="KOLOR LITE"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/ledColorBtn"
+                android:layout_alignBaseline="@+id/ledWhiteBtn"
+                android:layout_alignBottom="@+id/ledWhiteBtn"
+                android:layout_alignParentEnd="true"
+                android:layout_weight="1" />
+
+            <Button
+                android:text="WHITE LITE"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/ledWhiteBtn"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
             android:layout_weight="0.5" />
 
-        <Button
-            android:text="KOLOR LITE"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/ledColorBtn"
-            android:layout_alignBaseline="@+id/ledWhiteBtn"
-            android:layout_alignBottom="@+id/ledWhiteBtn"
-            android:layout_alignParentEnd="true"
+        <Switch
+            android:text="Rotation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/rotation"
             android:layout_weight="0.5" />
+
+        <Switch
+            android:text="Rotation mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/rotationmode"
+            android:layout_weight="0.5" />
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/speed"
+            android:layout_weight="0.5" />
+
     </LinearLayout>
+
 </RelativeLayout>
